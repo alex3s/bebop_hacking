@@ -4,6 +4,11 @@ Converts a Parrot Bebop .pud log file into a .csv file and a .kml file.
 Requires the simplekml Python module for KML support.
 
 @author: Matthew Lloyd (github@matthewlloyd.net)
+
+Modified by me to add timestamp <when> and wifi_signal to the .kml file
+GpsPrune now reads the file gps coordinates correctly.
+Other fields maybe added in future.
+
 """
 
 import json
@@ -100,25 +105,36 @@ def make_csv(reader):
 
 
 def make_kml(reader):
-	import simplekml
+	#import simplekml
+	from simplekml import Kml, Snippet, Types
 	f = reader.filename
 	f_kml = f + '.kml'
 	if os.path.exists(f_kml):
 		return
 	print 'Creating KML for %s' % (f,)
 	coord = []
+	when = [] #time
+	wifi = [] #wifi_signal
 	for packet in reader.packets:
 		if packet[reader.column_indices['product_gps_longitude']] == 0.0:
 			continue
+		when.append(packet[reader.column_indices['time']])
+		wifi.append(packet[reader.column_indices['wifi_signal']])
 		coord.append( (
 			packet[reader.column_indices['product_gps_longitude']],
 			packet[reader.column_indices['product_gps_latitude']],
 			packet[reader.column_indices['altitude']] / 100.0 / 3.28,  # 100ths of a foot to meters
 			) )
-
-	kml = simplekml.Kml()
-	gxtrack = kml.newgxtrack(name='track', altitudemode='relativeToGround')
-	gxtrack.newgxcoord(coord)
+	kml = Kml(name="Tracks", open=1)
+	doc = kml.newdocument(name='GPS device')	
+	fol = doc.newfolder(name='Tracks')
+	schema = kml.newschema()
+	schema.newgxsimplearrayfield(name='wifi_signal', type=Types.int, displayname='wifi_signal')
+	trk = fol.newgxtrack(name='track1', altitudemode='relativeToGround')
+	trk.extendeddata.schemadata.schemaurl = schema.id
+	trk.newwhen(when) 
+	trk.newgxcoord(coord)
+	trk.extendeddata.schemadata.newgxsimplearraydata('wifi_signal', wifi)
 	kml.save(f_kml)
 
 
