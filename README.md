@@ -1,8 +1,8 @@
-# Parrot Bebop Drone Hacking
+# Parrot Bebop and Parrot Disco Drone Hacking
 
 ## Shell Access
 
-Connect to the Bebop's WiFi network, then:
+Connect to the Bebop's / Disco's WiFi network, then:
 
     $ telnet 192.168.42.1
 
@@ -23,9 +23,9 @@ To active USB networking:
 
     / # /bin/usbnetwork.sh
 
-The Bebop's IP address on the USB network is 192.168.43.1
+The drone's IP address on the USB network is 192.168.43.1
 
-Short pressing on the Bebop's button while USB connected might also activate USB networking (untested).
+Short pressing on the drone's button while USB connected might also activate USB networking (untested).
 
 ## Configuration
 
@@ -91,6 +91,7 @@ You'll see one NMEA stanza per second, for example:
 ## PUD files (flight recordings)
 
 The drone records every flight as a single file in `/data/ftp/internal_000/Bebop_Drone/academy`.
+on Disco it's `/data/ftp/internal_000/media/`. PUD files are recorded only when video is recorded. 
 
 The file format is self-describing. Each file begins with a null-terminated JSON string listing the columns present in each data packet. For example (pretty-printed here for clarity):
 
@@ -140,10 +141,10 @@ The fields currently present in the log packets are:
 |flying_state|integer|1|Flying state: 1 = landed, 2 = in the air, 3 = in the air|
 |alert_state|integer|1|Alert state: 0 = normal|
 |wifi_signal|integer|1|WiFi signal strength, always 0 right now|
-|product_gps_available|boolean|1|Bebop GPS availability, always 0 right now|
-|product_gps_longitude|double|8|BeBop GPS longitude, in degrees|
-|product_gps_latitude|double|8|BeBop GPS latitude, in degrees|
-|product_gps_position_error|integer|4|BeBop GPS position error, always 0 right now|
+|product_gps_available|boolean|1|Drone GPS availability, always 0 right now|
+|product_gps_longitude|double|8|Drone GPS longitude, in degrees|
+|product_gps_latitude|double|8|Drone GPS latitude, in degrees|
+|product_gps_position_error|integer|4|Drone GPS position error, always 0 right now|
 |speed_vx|float|4|Horizontal speed, unknown units|
 |speed_vy|float|4|Horizontal speed, unknown units|
 |speed_vz|float|4|Vertical speed, unknown units|
