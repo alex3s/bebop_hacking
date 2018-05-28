@@ -1,4 +1,6 @@
-# Parrot Bebop and Parrot Disco Drone Hacking
+# Parrot Bebop and Parrot Disco Drone
+
+These files can be used to convert flight data files from Parrot Disco drone to KML and CSV format.
 
 ## Shell Access
 
@@ -91,7 +93,7 @@ You'll see one NMEA stanza per second, for example:
 ## PUD files (flight recordings)
 
 The drone records every flight as a single file in `/data/ftp/internal_000/Bebop_Drone/academy`.
-on Disco it's `/data/ftp/internal_000/media/`. PUD files are recorded only when video is recorded. 
+on Disco it's `/data/ftp/internal_000/Academy/`. PUD files are recorded only when video is recorded. 
 
 The file format is self-describing. Each file begins with a null-terminated JSON string listing the columns present in each data packet. For example (pretty-printed here for clarity):
 
